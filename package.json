@@ -1,1 +1,12 @@
-
+{
+  "name": "phoenix-scramjet",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@mercuryworkshop/scramjet": "2.0.0-alpha"
+  }
+}

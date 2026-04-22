@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix | Scramjet</title>
+    <style>
+        body { background: #050505; color: #00ffc8; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .box { background: rgba(0, 255, 200, 0.02); padding: 50px; border-radius: 20px; border: 1px solid #00ffc8; box-shadow: 0 0 40px rgba(0, 255, 200, 0.1); text-align: center; width: 450px; }
+        input { width: 100%; padding: 15px; margin-top: 25px; border-radius: 8px; border: 1px solid #00ffc8; background: #000; color: #00ffc8; outline: none; box-sizing: border-box; font-size: 16px; transition: 0.3s; }
+        input:focus { box-shadow: 0 0 15px #00ffc8; }
+        button { margin-top: 20px; width: 100%; padding: 14px; background: #00ffc8; border: none; border-radius: 8px; color: #000; font-weight: bold; cursor: pointer; letter-spacing: 2px; transition: 0.3s; }
+        button:hover { background: #00cca1; transform: scale(1.02); }
+        .status { margin-top: 15px; font-size: 0.7rem; opacity: 0.5; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div style="font-size: 3rem; letter-spacing: 8px; font-weight: bold;">PHOENIX</div>
+        <div class="status">ENGINE: SCRAMJET ALPHA-2</div>
+        <input type="text" id="url" placeholder="Enter target URL or search...">
+        <button onclick="launch()">INITIALIZE BYPASS</button>
+    </div>
 
+    <script src="/scram/scramjet.all.js"></script>
+    <script>
+        const { ScramjetController } = $scramjetLoadController();
+        const scramjet = new ScramjetController({
+            files: {
+                wasm: "/scram/scramjet.wasm.wasm",
+                all: "/scram/scramjet.all.js",
+                sync: "/scram/scramjet.sync.js",
+            }
+        });
+
+        // Start the engine and register the service worker
+        scramjet.init();
+        navigator.serviceWorker.register("sw.js");
+
+        function launch() {
+            const input = document.getElementById('url').value;
+            if (!input) return;
+            
+            let url = input.trim();
+            if (!url.startsWith('http')) url = 'https://' + url;
+
+            // This encodes the URL so filters can't read it
+            window.location.href = "/service/" + btoa(url);
+        }
+    </script>
+</body>
+</html>
